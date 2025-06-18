@@ -5,31 +5,15 @@ const nextConfig = {
   images: {
     domains: ['localhost'],
   },
-  webpack: (config) => {
-    config.optimization.splitChunks = {
-      chunks: 'all',
-      minSize: 20000,
-      maxSize: 70000,
-      cacheGroups: {
-        default: false,
-        vendors: false,
-        commons: {
-          name: 'commons',
-          chunks: 'all',
-          minChunks: 2,
-          reuseExistingChunk: true
-        },
-        lib: {
-          test: /[\\/]node_modules[\\/]/,
-          name(module) {
-            const packageName = module.context.match(/[\\/]node_modules[\\/](.+?)(?:[\\/]|$)/)[1];
-            return `npm.${packageName.replace('@', '')}`;
-          },
-          chunks: 'all',
-          priority: 1
-        }
-      }
+  webpack: (config, { isServer }) => {
+    // Fix for prop-types and react-dropzone compatibility
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      fs: false,
+      path: false,
+      crypto: false,
     };
+
     return config;
   }
 }

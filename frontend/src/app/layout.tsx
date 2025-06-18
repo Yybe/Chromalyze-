@@ -4,8 +4,8 @@ import { Header } from "@/components/layout/header";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 
 export const metadata: Metadata = {
-  title: 'Face Analysis App',
-  description: 'Upload and analyze your face',
+  title: 'Chromalyze - Professional Beauty Analysis',
+  description: 'AI-powered face shape and color season analysis with personalized beauty recommendations',
 }
 
 export default function RootLayout({
@@ -21,7 +21,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-screen bg-background font-sans antialiased" suppressHydrationWarning>
+      <body className="min-h-screen bg-gray-50 dark:bg-gray-900 font-sans antialiased" suppressHydrationWarning>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -30,7 +30,7 @@ export default function RootLayout({
         >
           <div className="relative flex min-h-screen flex-col">
             <Header />
-            <main className="flex-1 container mx-auto px-4 py-8">{children}</main>
+            <main className="flex-1">{children}</main>
           </div>
         </ThemeProvider>
       </body>

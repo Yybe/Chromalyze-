@@ -1,136 +1,145 @@
-# K-Beauty Analysis Application
+# Chromalyze
 
-This application analyzes facial features and provides personalized beauty recommendations based on face shape and color season.
+Professional AI-powered beauty analysis platform that provides personalized face shape detection and color season analysis with tailored beauty recommendations.
 
-## Features
+## 🌟 Features
 
-- **Advanced Face Shape Analysis**: Custom CNN model with >85% accuracy (Heart, Oblong, Oval, Round, Square)
-- **Color Season Determination**: AI-powered analysis (Spring, Summer, Autumn, Winter variants)
-- **Personalized Beauty Recommendations**: Tailored suggestions for makeup, hair, and accessories
-- **Dual Detection System**: CNN model with MediaPipe fallback for maximum reliability
+- **Face Shape Analysis**: Advanced geometric analysis using MediaPipe Face Mesh for accurate face shape classification
+- **Color Season Analysis**: Lab color space analysis with 12-season classification system
+- **Personalized Recommendations**: Tailored suggestions for hairstyles, makeup, colors, and accessories
+- **Local Processing**: All analysis runs locally using WebAssembly for privacy and speed
+- **Mobile-First Design**: Responsive interface optimized for all devices
+- **Dark Mode Support**: Professional light and dark themes
+- **Offline Capability**: IndexedDB caching for offline analysis results
 
-## Technology
+## 🚀 Technology Stack
 
-- **Backend**: FastAPI with Python
-- **Frontend**: Next.js with TypeScript
-- **Machine Learning**:
-  - Custom CNN model (EfficientNetB0) for face shape classification
-  - Gemini 2.0 Flash AI model via OpenRouter for color analysis
-  - MediaPipe for facial landmark detection (fallback)
+### Frontend
+- **Next.js 14** - React framework with App Router
+- **TypeScript** - Type-safe development
+- **Tailwind CSS** - Utility-first styling
+- **Shadcn/ui** - Modern component library
 
-## Setup
+### AI/ML
+- **MediaPipe Face Mesh** - 468-point facial landmark detection
+- **OpenCV.js** - Computer vision processing
+- **WebAssembly** - High-performance local processing
+- **Lab Color Space** - Perceptual color analysis
+
+### Storage
+- **IndexedDB** - Local storage for offline capability
+- **Browser APIs** - Camera access and file handling
+
+## 📱 Getting Started
 
 ### Prerequisites
+- Node.js 18+
+- npm or yarn
 
-- Python 3.10+
-- Node.js 16+
-- pnpm
+### Installation
 
-### Backend Setup
-
-1. Navigate to the backend directory:
-   ```
-   cd backend
-   ```
-
-2. Install dependencies:
-   ```
-   pip install -r requirements.txt
-   ```
-
-3. **Setup Face Shape CNN Model** (Recommended):
-   ```powershell
-   # Run from project root
-   .\setup_face_shape_ml.ps1
-   ```
-
-   Or manually:
+1. **Clone the repository**
    ```bash
-   cd backend
-   python setup_ml_model.py
+   git clone https://github.com/Yybe/Chromalyze-.git
+   cd Chromalyze-
    ```
 
-4. Set your OpenRouter API key (optional - a default key is provided):
-   ```
-   # On Windows:
-   $env:OPENROUTER_API_KEY="your-api-key-here"
-
-   # On Linux/Mac:
-   export OPENROUTER_API_KEY="your-api-key-here"
-   ```
-
-5. Start the backend server:
-   ```
-   python -m uvicorn main:app --reload --host 127.0.0.1 --port 8000
-   ```
-
-### Frontend Setup
-
-1. Navigate to the frontend directory:
-   ```
+2. **Install frontend dependencies**
+   ```bash
    cd frontend
+   npm install
    ```
 
-2. Install dependencies:
-   ```
-   pnpm install
-   ```
-
-3. Start the frontend server:
-   ```
-   pnpm run dev
+3. **Start the development server**
+   ```bash
+   npm run dev
    ```
 
-## Usage
+4. **Open your browser**
+   Navigate to `http://localhost:3000`
 
-1. Open your browser and navigate to http://localhost:3000
-2. Upload a clear photo of a face
-3. Wait for the analysis to complete
-4. View your personalized recommendations
+## 🎯 Usage
 
-## How It Works
+1. **Upload Photo**: Take a photo or upload an existing image
+2. **AI Analysis**: The system analyzes facial features and color characteristics
+3. **Get Results**: Receive detailed face shape and color season analysis
+4. **View Recommendations**: Explore personalized beauty recommendations
 
-### Face Shape Detection
-1. **Primary Method**: Custom CNN model analyzes uploaded image
-   - EfficientNetB0 architecture with transfer learning
-   - Trained on 5,000 celebrity images (1,000 per face shape category)
-   - Achieves >85% accuracy on test data
-2. **Fallback Method**: MediaPipe facial landmark analysis
-   - Used when CNN confidence is below threshold
-   - Geometric analysis of facial proportions
+## 🏗️ Project Structure
 
-### Color Analysis
-1. Image is analyzed using Gemini 2.0 Flash model via OpenRouter
-2. Color season determination based on skin tone and undertones
-3. Personalized recommendations generated
+```
+Chromalyze-/
+├── frontend/                 # Next.js frontend application
+│   ├── src/
+│   │   ├── app/             # App Router pages
+│   │   ├── components/      # React components
+│   │   ├── lib/            # Utility functions and services
+│   │   └── types/          # TypeScript type definitions
+│   ├── public/             # Static assets
+│   └── package.json        # Frontend dependencies
+├── backend/                # Python backend (optional)
+└── README.md              # Project documentation
+```
 
-### Complete Pipeline
-1. Image upload and preprocessing
-2. Face shape classification (CNN → MediaPipe fallback)
-3. Color season analysis (AI model)
-4. Recommendation generation
-5. Results presentation with confidence scores
+## 🔧 Configuration
 
-## Model Performance
+The application is designed to work out of the box with no additional configuration required. All processing happens locally in the browser.
 
-### Face Shape CNN Model
-- **Architecture**: EfficientNetB0 with custom classification head
-- **Dataset**: 5,000 images (Heart, Oblong, Oval, Round, Square)
-- **Accuracy**: >85% target on test data
-- **Training**: Transfer learning with data augmentation
-- **Inference**: <100ms per image
+### Environment Variables (Optional)
+Create a `.env.local` file in the frontend directory for any custom configurations:
 
-### Dual Detection System
-- **Primary**: CNN model for high accuracy
-- **Fallback**: MediaPipe for reliability
-- **Confidence Threshold**: 0.7 (switches to fallback if below)
-- **Method Reporting**: Shows which detection method was used
+```env
+# Optional: Custom API endpoints
+NEXT_PUBLIC_API_URL=http://localhost:8000
+```
 
-## License
+## 🧪 Testing
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+```bash
+# Run frontend tests
+cd frontend
+npm test
 
-## Credits
+# Run with coverage
+npm run test:coverage
+```
 
-- Face shape recommendations based on beauty industry standards
-- Color analysis based on the 12-season color system
+## 🚀 Deployment
+
+### Vercel (Recommended)
+1. Connect your GitHub repository to Vercel
+2. Deploy automatically on push to main branch
+
+### Manual Build
+```bash
+cd frontend
+npm run build
+npm start
+```
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- MediaPipe team for facial landmark detection
+- OpenCV community for computer vision tools
+- Tailwind CSS for the styling framework
+- Shadcn/ui for component library
+
+## 📞 Support
+
+For support, please open an issue on GitHub or contact the development team.
+
+---
+
+**Built with ❤️ for the beauty and tech community**
