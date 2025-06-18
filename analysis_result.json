@@ -1,0 +1,7 @@
+{
+  "status": "error",
+  "detail": "API request error: HTTPSConnectionPool(host='api.openrouter.ai', port=443): Max retries exceeded with url: /api/v1/chat/completions (Caused by NameResolutionError(\"<urllib3.connection.HTTPSConnection object at 0x00000162012D8910>: Failed to resolve 'api.openrouter.ai' ([Errno 11001] getaddrinfo failed)\"))",
+  "faces_detected": 0,
+  "face_shape": "Unknown",
+  "color_season": "Unknown"
+}

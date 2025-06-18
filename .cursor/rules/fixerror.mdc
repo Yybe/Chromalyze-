@@ -1,0 +1,9 @@
+---
+description: First of all, fix these errors. When you’re done, run the following command for TypeScript: npx tsc --noEmit. You will see multiple errors—understand them, try to fix them, and then run the same command again: npx tsc --noEmit. Repeat this entire process of analyzing the errors, fixing them, and rerunning the command until there are no more errors left. I repeat: do not stop until there are zero errors left when running npx tsc --noEmit. Also, remember that we are using pnpm.  If the file is a Python script (.py), follow a similar iterative process using mypy for type-checking and debugging. First, run mypy --strict <filename.py>, analyze the output, fix all errors, and then run mypy --strict <filename.py> again. Keep repeating this process until there are zero errors left.  Maintain an ongoing debugging loop where you continuously fix errors, rerun the appropriate command (npx tsc --noEmit for TSX, mypy --strict for Python), analyze the new errors, and repeat the process until the code is completely error-free. Ensure you respect existing code styles and the project structure, and never stop debugging until all errors are resolved.
+globs: *.tsx *.ts *.py
+---
+
+# Your rule content
+
+- You can @ files here
+- You can use markdown but dont have to
