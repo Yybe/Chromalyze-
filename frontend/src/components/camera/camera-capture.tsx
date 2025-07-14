@@ -281,10 +281,10 @@ const CameraCapture: React.FC<CameraCaptureProps> = ({ onCapture, onClose }) => 
 
         {/* Guide Alert with Real-time Status */}
         <Alert className={`mb-4 transition-all duration-300 ${
-          currentGuide.type === 'success' ? 'border-green-500 bg-green-50 text-green-800' :
-          currentGuide.type === 'warning' ? 'border-yellow-500 bg-yellow-50 text-yellow-800' :
-          currentGuide.type === 'error' ? 'border-red-500 bg-red-50 text-red-800' :
-          'border-blue-500 bg-blue-50 text-blue-800'
+          currentGuide.type === 'success' ? 'border-green-500 bg-green-500/10 text-green-700 dark:text-green-400' :
+          currentGuide.type === 'warning' ? 'border-yellow-500 bg-yellow-500/10 text-yellow-700 dark:text-yellow-400' :
+          currentGuide.type === 'error' ? 'border-red-500 bg-red-500/10 text-red-700 dark:text-red-400' :
+          'border-primary bg-primary/10 text-primary'
         }`}>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -321,7 +321,7 @@ const CameraCapture: React.FC<CameraCaptureProps> = ({ onCapture, onClose }) => 
                   autoPlay
                   playsInline
                   muted
-                  className="w-full h-auto max-h-96 object-cover"
+                  className="w-full h-auto max-h-96 object-cover scale-x-[-1]"
                 />
 
                 {/* Hidden canvas for analysis */}
@@ -333,11 +333,11 @@ const CameraCapture: React.FC<CameraCaptureProps> = ({ onCapture, onClose }) => 
                 {/* Face Guide Overlay with Dynamic Feedback */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                   <div className={`border-2 border-dashed rounded-full w-64 h-80 transition-all duration-300 ${
-                    faceDetected ? 'border-green-400 opacity-80' : 'border-white opacity-50'
+                    faceDetected ? 'border-primary opacity-80 shadow-lg shadow-primary/20' : 'border-white/70 opacity-50'
                   }`}>
                     {/* Face detection indicator */}
                     {faceDetected && (
-                      <div className="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded text-xs">
+                      <div className="absolute top-2 right-2 bg-primary text-primary-foreground px-2 py-1 rounded text-xs font-medium">
                         Face Detected ✓
                       </div>
                     )}
@@ -389,7 +389,7 @@ const CameraCapture: React.FC<CameraCaptureProps> = ({ onCapture, onClose }) => 
                   <RotateCcw className="h-4 w-4 mr-2" />
                   Retake
                 </Button>
-                <Button onClick={handleConfirm} className="bg-green-600 hover:bg-green-700">
+                <Button onClick={handleConfirm} className="bg-primary hover:bg-primary/90">
                   <Check className="h-4 w-4 mr-2" />
                   Use This Photo
                 </Button>
@@ -405,8 +405,8 @@ const CameraCapture: React.FC<CameraCaptureProps> = ({ onCapture, onClose }) => 
                   disabled={isCapturing || !cameraReady || !faceDetected || lightingQuality === 'poor'}
                   className={`transition-all duration-300 ${
                     faceDetected && lightingQuality !== 'poor'
-                      ? 'bg-green-600 hover:bg-green-700 animate-pulse'
-                      : 'bg-blue-600 hover:bg-blue-700'
+                      ? 'bg-primary hover:bg-primary/90 animate-pulse shadow-lg shadow-primary/25'
+                      : 'bg-primary/70 hover:bg-primary/80'
                   }`}
                 >
                   {isCapturing ? (

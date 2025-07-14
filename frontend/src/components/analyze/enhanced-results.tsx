@@ -169,7 +169,7 @@ const EnhancedResults: React.FC<EnhancedResultsProps> = ({ results }) => {
                 {recommendations.hairstyles.map((hairstyle, index) => (
                   <div key={index} className="border rounded-lg p-4">
                     <h4 className="font-semibold mb-2">{hairstyle.name}</h4>
-                    <p className="text-sm text-gray-600 mb-3">{hairstyle.description}</p>
+                    <p className="text-sm text-muted-foreground mb-3">{hairstyle.description}</p>
                     <div className="flex items-center justify-between">
                       <Progress value={hairstyle.suitability * 100} className="flex-1 mr-2" />
                       <span className="text-sm font-medium">{Math.round(hairstyle.suitability * 100)}%</span>
@@ -328,7 +328,7 @@ const EnhancedResults: React.FC<EnhancedResultsProps> = ({ results }) => {
                   <ul className="text-sm space-y-1">
                     {recommendations.styling.necklines.map((tip, index) => (
                       <li key={index} className="flex items-center gap-2">
-                        <TrendingUp className="w-3 h-3 text-blue-500" />
+                        <TrendingUp className="w-3 h-3 text-primary" />
                         {tip}
                       </li>
                     ))}

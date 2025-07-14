@@ -107,7 +107,7 @@ const PreferencesComponent: React.FC = () => {
     setPreferences(prev => ({
       ...prev,
       [section]: {
-        ...prev[section],
+        ...(prev[section] as any),
         [key]: value
       }
     }));
@@ -188,9 +188,8 @@ const PreferencesComponent: React.FC = () => {
               </p>
             </div>
             <Switch
-              id="enhanced-analysis"
               checked={preferences.analysisSettings.useEnhancedAnalysis}
-              onCheckedChange={(checked) => 
+              onCheckedChange={(checked: boolean) =>
                 updatePreference('analysisSettings', 'useEnhancedAnalysis', checked)
               }
             />
@@ -204,9 +203,8 @@ const PreferencesComponent: React.FC = () => {
               </p>
             </div>
             <Switch
-              id="save-results"
               checked={preferences.analysisSettings.saveResults}
-              onCheckedChange={(checked) => 
+              onCheckedChange={(checked: boolean) =>
                 updatePreference('analysisSettings', 'saveResults', checked)
               }
             />
@@ -220,9 +218,8 @@ const PreferencesComponent: React.FC = () => {
               </p>
             </div>
             <Switch
-              id="auto-analyze"
               checked={preferences.analysisSettings.autoAnalyze}
-              onCheckedChange={(checked) => 
+              onCheckedChange={(checked: boolean) =>
                 updatePreference('analysisSettings', 'autoAnalyze', checked)
               }
             />
@@ -247,9 +244,8 @@ const PreferencesComponent: React.FC = () => {
               </p>
             </div>
             <Switch
-              id="save-images"
               checked={preferences.privacy.saveImages}
-              onCheckedChange={(checked) => 
+              onCheckedChange={(checked: boolean) =>
                 updatePreference('privacy', 'saveImages', checked)
               }
             />
@@ -263,9 +259,8 @@ const PreferencesComponent: React.FC = () => {
               </p>
             </div>
             <Switch
-              id="share-analytics"
               checked={preferences.privacy.shareAnalytics}
-              onCheckedChange={(checked) => 
+              onCheckedChange={(checked: boolean) =>
                 updatePreference('privacy', 'shareAnalytics', checked)
               }
             />

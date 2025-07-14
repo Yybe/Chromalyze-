@@ -191,29 +191,29 @@ export function UploadForm() {
             className={cn(
               "border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors",
               isDragActive
-                ? "border-blue-400 bg-blue-50 dark:bg-blue-900/20"
-                : "border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500"
+                ? "border-primary bg-primary/10"
+                : "border-border hover:border-primary/50"
             )}
           >
             <input {...getInputProps()} />
-            <Upload className="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500 mb-4" />
-            <p className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+            <Upload className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+            <p className="text-lg font-medium text-foreground mb-2">
               Upload your photo
             </p>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+            <p className="text-sm text-muted-foreground mb-4">
               Drag and drop your image here, or click to select
             </p>
-            <p className="text-xs text-gray-400 dark:text-gray-500">
+            <p className="text-xs text-muted-foreground">
               Supports: JPG, PNG, WebP (max 5MB)
             </p>
           </div>
 
           {/* Divider */}
           <div className="flex items-center justify-center">
-            <div className="flex items-center space-x-2 text-gray-500 dark:text-gray-400">
-              <div className="h-px bg-gray-300 dark:bg-gray-600 flex-1"></div>
+            <div className="flex items-center space-x-2 text-muted-foreground">
+              <div className="h-px bg-border flex-1"></div>
               <span className="text-sm">or</span>
-              <div className="h-px bg-gray-300 dark:bg-gray-600 flex-1"></div>
+              <div className="h-px bg-border flex-1"></div>
             </div>
           </div>
 
@@ -240,7 +240,7 @@ export function UploadForm() {
               <button
                 type="button"
                 onClick={handleRemove}
-                className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600"
+                className="absolute top-2 right-2 p-1 bg-destructive text-destructive-foreground rounded-full hover:bg-destructive/90"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -251,21 +251,21 @@ export function UploadForm() {
           {isUploading && (
             <div className="space-y-2">
               <Progress value={uploadProgress} className="w-full" />
-              <p className="text-sm text-gray-600 text-center">
+              <p className="text-sm text-muted-foreground text-center">
                 Analyzing your image... {uploadProgress}%
               </p>
             </div>
           )}
 
-          <Button type="submit" disabled={!file || isUploading} className="w-full">
+          <Button type="submit" disabled={!file || isUploading} className="w-full bg-primary hover:bg-primary/90">
             {isUploading ? 'Analyzing...' : 'Analyze Image'}
           </Button>
         </form>
       )}
 
       {error && (
-        <div className="mt-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md">
-          <p className="text-red-600 dark:text-red-400">{error}</p>
+        <div className="mt-4 p-4 bg-destructive/10 border border-destructive/20 rounded-md">
+          <p className="text-destructive">{error}</p>
         </div>
       )}
 

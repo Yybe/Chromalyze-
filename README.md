@@ -1,12 +1,12 @@
 # Chromalyze
 
-Professional AI-powered beauty analysis platform that provides personalized face shape detection and color season analysis with tailored beauty recommendations.
+Professional AI-powered face analysis platform that provides personalized face shape detection and color season analysis with tailored recommendations.
 
 ## 🌟 Features
 
 - **Face Shape Analysis**: Advanced geometric analysis using MediaPipe Face Mesh for accurate face shape classification
 - **Color Season Analysis**: Lab color space analysis with 12-season classification system
-- **Personalized Recommendations**: Tailored suggestions for hairstyles, makeup, colors, and accessories
+- **Personalized Recommendations**: Tailored suggestions for hairstyles, styling, colors, and accessories
 - **Local Processing**: All analysis runs locally using WebAssembly for privacy and speed
 - **Mobile-First Design**: Responsive interface optimized for all devices
 - **Dark Mode Support**: Professional light and dark themes
@@ -63,7 +63,7 @@ Professional AI-powered beauty analysis platform that provides personalized face
 1. **Upload Photo**: Take a photo or upload an existing image
 2. **AI Analysis**: The system analyzes facial features and color characteristics
 3. **Get Results**: Receive detailed face shape and color season analysis
-4. **View Recommendations**: Explore personalized beauty recommendations
+4. **View Recommendations**: Explore personalized styling recommendations
 
 ## 🏗️ Project Structure
 
@@ -142,4 +142,4 @@ For support, please open an issue on GitHub or contact the development team.
 
 ---
 
-**Built with ❤️ for the beauty and tech community**
+**Built with ❤️ for the face analysis and tech community**

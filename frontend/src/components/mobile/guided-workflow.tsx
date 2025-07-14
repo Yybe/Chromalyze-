@@ -120,7 +120,7 @@ const GuidedWorkflow: React.FC<GuidedWorkflowProps> = ({ onComplete, children })
   ];
 
   const updateWorkflowData = (key: string, value: any) => {
-    setWorkflowData(prev => ({ ...prev, [key]: value }));
+    setWorkflowData((prev: any) => ({ ...prev, [key]: value }));
     
     // Mark current step as complete
     const updatedSteps = [...steps];

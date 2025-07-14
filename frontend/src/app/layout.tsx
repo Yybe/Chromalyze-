@@ -4,8 +4,8 @@ import { Header } from "@/components/layout/header";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 
 export const metadata: Metadata = {
-  title: 'Chromalyze - Professional Beauty Analysis',
-  description: 'AI-powered face shape and color season analysis with personalized beauty recommendations',
+  title: 'Chromalyze - Advanced Face Analysis',
+  description: 'AI-powered face shape and color season analysis with personalized recommendations using cutting-edge technology',
 }
 
 export default function RootLayout({
@@ -21,7 +21,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-screen bg-gray-50 dark:bg-gray-900 font-sans antialiased" suppressHydrationWarning>
+      <body className="min-h-screen bg-background font-sans antialiased" suppressHydrationWarning>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
