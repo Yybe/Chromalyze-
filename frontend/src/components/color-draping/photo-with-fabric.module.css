@@ -1,0 +1,115 @@
+.photoWithFabricContainer {
+  position: relative;
+  width: 100%;
+  height: 60vh;
+  max-height: 500px;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.photoWrapper {
+  position: relative;
+  width: 80%;
+  height: 90%;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: opacity 0.3s ease;
+}
+
+.photoWrapper.loading {
+  opacity: 0;
+}
+
+.photoWrapper.loaded {
+  opacity: 1;
+}
+
+.userPhoto {
+  object-fit: cover;
+  object-position: center;
+  width: 100%;
+  height: 100%;
+}
+
+.photoFrame {
+  position: absolute;
+  inset: 0;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  border-radius: 8px;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+  pointer-events: none;
+}
+
+.photoPlaceholder {
+  position: relative;
+  width: 80%;
+  height: 90%;
+  background: #f8f9fa;
+  border: 2px dashed #dee2e6;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.photoError {
+  text-align: center;
+  color: #6c757d;
+}
+
+.errorIcon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.errorText {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.retryButton {
+  padding: 0.5rem 1rem;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: background-color 0.2s;
+}
+
+.retryButton:hover {
+  background: #0056b3;
+}
+
+@media (max-width: 768px) {
+  .photoWithFabricContainer {
+    height: 50vh;
+    min-height: 350px;
+  }
+
+  .photoWrapper {
+    width: 85%;
+    height: 85%;
+  }
+}
+
+@media (max-width: 480px) {
+  .photoWithFabricContainer {
+    height: 45vh;
+    min-height: 300px;
+  }
+
+  .photoWrapper {
+    width: 90%;
+    height: 80%;
+  }
+}

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import ResultsDisplay from './results-display'
+import AnalysisResultsEntry from '@/components/analyze/analysis-results-entry'
 
 interface ColorObject {
   name: string;
@@ -54,6 +55,7 @@ export default function AnalysisClient({ id }: { id: string }) {
   const [pollCount, setPollCount] = useState(0)
   const [isLocalAnalysis, setIsLocalAnalysis] = useState(false)
   const [analysisDetail, setAnalysisDetail] = useState<string | null>(null)
+  const [userPhotoUrl, setUserPhotoUrl] = useState<string | null>(null)
 
   useEffect(() => {
     // Debug log for ID
@@ -63,6 +65,12 @@ export default function AnalysisClient({ id }: { id: string }) {
       console.error('Missing analysis ID in URL params');
       setError('Missing analysis ID. Please try again with a valid analysis.');
       return; // Don't proceed with polling if no ID
+    }
+
+    // Try to get user photo from sessionStorage
+    const storedPhoto = sessionStorage.getItem(`photo_${id}`);
+    if (storedPhoto) {
+      setUserPhotoUrl(storedPhoto);
     }
     
     // Define the fetch function inside the useEffect to properly capture the id
@@ -167,7 +175,11 @@ export default function AnalysisClient({ id }: { id: string }) {
   if (status === "completed" && results) {
     return (
       <>
-        <ResultsDisplay results={results} />
+        <AnalysisResultsEntry 
+          results={results} 
+          analysisId={id}
+          userPhotoUrl={userPhotoUrl || undefined}
+        />
         {isLocalAnalysis && (
           <div className="container mx-auto max-w-[800px] mt-4 mb-8">
             <div className="bg-amber-50 border border-amber-200 rounded-md p-4">

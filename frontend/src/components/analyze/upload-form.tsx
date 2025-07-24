@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils"
 import CameraCapture from "@/components/camera/camera-capture"
 import { analysisService, ComprehensiveAnalysisResult } from "@/lib/analysis-service"
 import EnhancedResults from "@/components/analyze/enhanced-results"
+import EnhancedResultsEntry from "@/components/analyze/enhanced-results-entry"
 
 const BACKEND_URL = 'http://localhost:8000'
 
@@ -94,6 +95,13 @@ export function UploadForm() {
 
       // Run comprehensive analysis with automatic saving
       const result = await analysisService.analyzeImage(imageElement, true)
+
+      // Store the photo URL for potential walkthrough use
+      if (preview) {
+        const analysisId = `enhanced_${Date.now()}`;
+        sessionStorage.setItem(`photo_${analysisId}`, preview);
+        sessionStorage.setItem(`analysis_${analysisId}`, JSON.stringify(result));
+      }
 
       setEnhancedResults(result)
       setIsUploading(false)
@@ -272,7 +280,10 @@ export function UploadForm() {
       {/* Enhanced Results Display */}
       {enhancedResults && (
         <div className="mt-8">
-          <EnhancedResults results={enhancedResults} />
+          <EnhancedResultsEntry 
+            results={enhancedResults} 
+            userPhotoUrl={preview || undefined}
+          />
         </div>
       )}
 

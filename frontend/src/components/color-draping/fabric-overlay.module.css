@@ -1,0 +1,99 @@
+.fabricOverlayContainer {
+  position: absolute;
+  bottom: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 25%;
+  z-index: 10;
+}
+
+.fabricSwatch {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px 8px 0 0;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.fabricSwatch.transitioning {
+  transform: scale(1.02);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+.fabricTexture {
+  position: absolute;
+  inset: 0;
+  opacity: 0.1;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.fabricWeave {
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.3) 1px, transparent 1px),
+    radial-gradient(circle at 70% 70%, rgba(0,0,0,0.1) 1px, transparent 1px);
+  background-size: 4px 4px, 6px 6px;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.fabricHighlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 30%;
+  background: linear-gradient(180deg, rgba(255,255,255,0.2) 0%, transparent 100%);
+  border-radius: 8px 8px 0 0;
+  pointer-events: none;
+}
+
+.fabricSilk {
+  background: linear-gradient(145deg, var(--fabric-color, #ccc), color-mix(in srgb, var(--fabric-color, #ccc) 90%, black));
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255,255,255,0.3);
+}
+
+.fabricSilk .fabricTexture {
+  background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.1) 50%, transparent 60%);
+  background-size: 20px 20px;
+  animation: silkShimmer 3s ease-in-out infinite;
+}
+
+@keyframes silkShimmer {
+  0%, 100% { opacity: 0.1; }
+  50% { opacity: 0.2; }
+}
+
+.fabricCotton {
+  background: linear-gradient(135deg, var(--fabric-color, #ccc) 0%, color-mix(in srgb, var(--fabric-color, #ccc) 95%, black) 100%);
+}
+
+.fabricWool {
+  background: radial-gradient(circle at 30% 30%, color-mix(in srgb, var(--fabric-color, #ccc) 105%, white), var(--fabric-color, #ccc));
+}
+
+.fabricSatin {
+  background: linear-gradient(45deg, var(--fabric-color, #ccc), color-mix(in srgb, var(--fabric-color, #ccc) 110%, white), var(--fabric-color, #ccc));
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3), inset 0 2px 4px rgba(255,255,255,0.4);
+}
+
+@media (max-width: 768px) {
+  .fabricOverlayContainer {
+    width: 70%;
+    height: 20%;
+    bottom: 15%;
+  }
+}
+
+@media (max-width: 480px) {
+  .fabricOverlayContainer {
+    width: 80%;
+    height: 18%;
+    bottom: 12%;
+  }
+}

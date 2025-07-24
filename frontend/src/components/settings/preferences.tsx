@@ -107,7 +107,7 @@ const PreferencesComponent: React.FC = () => {
     setPreferences(prev => ({
       ...prev,
       [section]: {
-        ...prev[section],
+        ...(prev[section] as any || {}),
         [key]: value
       }
     }));
