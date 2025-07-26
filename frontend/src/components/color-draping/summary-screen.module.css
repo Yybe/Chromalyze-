@@ -1,16 +1,18 @@
 .summaryScreen {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+  background: hsl(var(--background));
   padding: 2rem;
+  transition: background-color 0.3s ease;
 }
 
 .summaryContent {
   max-width: 1000px;
   margin: 0 auto;
-  background: white;
-  border-radius: 20px;
+  background: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.5rem;
   padding: 3rem;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 40px hsla(var(--foreground), 0.1);
   animation: fadeIn 0.6s ease-out;
 }
 
@@ -29,7 +31,7 @@
   text-align: center;
   margin-bottom: 3rem;
   padding-bottom: 2rem;
-  border-bottom: 2px solid #f1f5f9;
+  border-bottom: 2px solid hsl(var(--border));
 }
 
 .seasonIcon {
@@ -38,33 +40,36 @@
   justify-content: center;
   width: 80px;
   height: 80px;
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  background: hsl(var(--primary));
   border-radius: 50%;
-  color: white;
+  color: hsl(var(--primary-foreground));
   margin-bottom: 1.5rem;
   animation: glow 2s ease-in-out infinite alternate;
+  box-shadow: 0 4px 20px hsla(var(--primary), 0.3);
 }
 
 @keyframes glow {
   from {
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 4px 20px hsla(var(--primary), 0.3);
   }
   to {
-    box-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
+    box-shadow: 0 6px 30px hsla(var(--primary), 0.5);
   }
 }
 
 .seasonTitle {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #1f2937;
+  color: hsl(var(--foreground));
   margin-bottom: 1rem;
+  font-family: Inter, system-ui, sans-serif;
 }
 
 .seasonSubtitle {
   font-size: 1.125rem;
-  color: #6b7280;
+  color: hsl(var(--muted-foreground));
   line-height: 1.6;
+  font-family: Inter, system-ui, sans-serif;
 }
 
 @media (max-width: 768px) {

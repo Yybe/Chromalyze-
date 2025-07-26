@@ -31,7 +31,7 @@ export function Header() {
               </Link>
             </nav>
           </div>
-          <div className="flex items-center">
+          <div className="flex items-center no-overlap">
             <ModeToggle />
           </div>
         </div>

@@ -26,11 +26,13 @@ export const EnhancedResultsEntry: React.FC<EnhancedResultsEntryProps> = ({
     if (userPhotoUrl) {
       // Generate a unique ID for this analysis
       const analysisId = `enhanced_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-      
+
       // Store data for walkthrough page
       sessionStorage.setItem(`analysis_${analysisId}`, JSON.stringify(results));
       sessionStorage.setItem(`photo_${analysisId}`, userPhotoUrl);
-      
+      // Mark this as an enhanced analysis (no original backend ID)
+      sessionStorage.setItem(`original_id_${analysisId}`, 'enhanced');
+
       // Navigate to walkthrough
       router.push(`/analyze/${analysisId}/walkthrough`);
     }

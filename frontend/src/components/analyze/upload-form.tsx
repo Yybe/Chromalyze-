@@ -2,35 +2,25 @@
 
 import * as React from "react"
 import { useCallback, useState } from "react"
+import { useRouter } from "next/navigation"
 import { useDropzone } from "react-dropzone"
 import { Upload, X, Camera } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { cn } from "@/lib/utils"
 import CameraCapture from "@/components/camera/camera-capture"
-import { analysisService, ComprehensiveAnalysisResult } from "@/lib/analysis-service"
-import EnhancedResults from "@/components/analyze/enhanced-results"
-import EnhancedResultsEntry from "@/components/analyze/enhanced-results-entry"
+import { analysisService } from "@/lib/analysis-service"
 
 const BACKEND_URL = 'http://localhost:8000'
 
-interface AnalysisResponse {
-  status: string
-  result: {
-    face_shape: string
-    color_season: string
-    note?: string
-  }
-}
-
 export function UploadForm() {
+  const router = useRouter()
   const [file, setFile] = useState<File | null>(null)
   const [preview, setPreview] = useState<string | null>(null)
   const [isUploading, setIsUploading] = useState(false)
   const [uploadProgress, setUploadProgress] = useState(0)
   const [error, setError] = useState<string | null>(null)
-  const [results, setResults] = useState<AnalysisResponse | null>(null)
-  const [enhancedResults, setEnhancedResults] = useState<ComprehensiveAnalysisResult | null>(null)
+
   const [useEnhancedAnalysis, setUseEnhancedAnalysis] = useState(true)
   const [showCamera, setShowCamera] = useState(false)
 
@@ -71,8 +61,6 @@ export function UploadForm() {
 
     setIsUploading(true)
     setError(null)
-    setResults(null)
-    setEnhancedResults(null)
 
     try {
       if (useEnhancedAnalysis) {
@@ -96,18 +84,17 @@ export function UploadForm() {
       // Run comprehensive analysis with automatic saving
       const result = await analysisService.analyzeImage(imageElement, true)
 
-      // Store the photo URL for potential walkthrough use
+      // Store the photo URL and analysis results
+      const analysisId = `enhanced_${Date.now()}`;
       if (preview) {
-        const analysisId = `enhanced_${Date.now()}`;
         sessionStorage.setItem(`photo_${analysisId}`, preview);
-        sessionStorage.setItem(`analysis_${analysisId}`, JSON.stringify(result));
       }
+      sessionStorage.setItem(`analysis_${analysisId}`, JSON.stringify(result));
 
-      setEnhancedResults(result)
       setIsUploading(false)
 
-      // Show success message
-      console.log('Analysis completed and saved to offline storage')
+      // Redirect to the analysis entry page to choose between full analysis or walkthrough
+      router.push(`/analyze/${analysisId}/entry`)
 
     } catch (error) {
       console.error('Enhanced analysis failed:', error)
@@ -133,8 +120,16 @@ export function UploadForm() {
     const data = await response.json()
 
     if (data.status === 'completed') {
+      // Use the actual analysis ID from backend
+      const analysisId = data.analysis_id;
+
+      // Store results and photo for the analysis client
+      if (preview) {
+        sessionStorage.setItem(`photo_${analysisId}`, preview);
+      }
+
       setIsUploading(false)
-      setResults(data)
+      router.push(`/analyze/${analysisId}/entry`)
     } else {
       throw new Error(data.error_detail || 'Analysis failed')
     }
@@ -277,31 +272,7 @@ export function UploadForm() {
         </div>
       )}
 
-      {/* Enhanced Results Display */}
-      {enhancedResults && (
-        <div className="mt-8">
-          <EnhancedResultsEntry 
-            results={enhancedResults} 
-            userPhotoUrl={preview || undefined}
-          />
-        </div>
-      )}
 
-      {/* Legacy Results Display */}
-      {results && !enhancedResults && (
-        <div className="mt-8 space-y-4">
-          <div className="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-md">
-            <h3 className="text-lg font-semibold text-green-800 dark:text-green-400">Analysis Results</h3>
-            <div className="mt-2 space-y-2 text-gray-900 dark:text-white">
-              <p><strong>Face Shape:</strong> {results.result.face_shape}</p>
-              <p><strong>Color Season:</strong> {results.result.color_season}</p>
-              {results.result.note && (
-                <p className="text-sm text-green-600 dark:text-green-400">{results.result.note}</p>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Camera Capture Modal */}
       {showCamera && (

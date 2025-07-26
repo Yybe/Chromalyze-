@@ -1,25 +1,36 @@
 .photoWithFabricContainer {
   position: relative;
   width: 100%;
-  height: 60vh;
-  max-height: 500px;
-  min-height: 400px;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
 }
 
 .photoWrapper {
   position: relative;
-  width: 80%;
-  height: 90%;
-  border-radius: 8px;
+  width: 100%;
+  height: 100%;
+  max-width: 450px;
+  max-height: 600px;
+  aspect-ratio: 3/4;
+  border-radius: 1.5rem;
   overflow: hidden;
-  transition: opacity 0.3s ease;
+  transition: all 0.6s ease;
+  box-shadow:
+    0 8px 32px hsla(var(--foreground), 0.12),
+    0 2px 8px hsla(var(--foreground), 0.08);
+  border: 2px solid hsl(var(--background));
+  background: hsl(var(--background));
+}
+
+.photoContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 .photoWrapper.loading {
@@ -35,24 +46,52 @@
   object-position: center;
   width: 100%;
   height: 100%;
+  transition: filter 0.6s ease-in-out;
 }
 
 .photoFrame {
   position: absolute;
   inset: 0;
-  border: 2px solid rgba(255, 255, 255, 0.8);
-  border-radius: 8px;
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+  border: 2px solid hsl(var(--background) / 0.8);
+  border-radius: 0.5rem;
+  box-shadow: inset 0 0 0 1px hsl(var(--border));
   pointer-events: none;
+  z-index: 2;
+}
+
+/* Positive glow effect for good colors */
+.positiveGlow {
+  position: absolute;
+  inset: -2px;
+  border-radius: 0.5rem;
+  background: linear-gradient(45deg,
+    rgba(34, 197, 94, 0.1) 0%,
+    rgba(59, 130, 246, 0.1) 50%,
+    rgba(168, 85, 247, 0.1) 100%);
+  opacity: 0;
+  animation: positiveGlowPulse 3s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes positiveGlowPulse {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: scale(1.02);
+  }
 }
 
 .photoPlaceholder {
   position: relative;
   width: 80%;
   height: 90%;
-  background: #f8f9fa;
-  border: 2px dashed #dee2e6;
-  border-radius: 8px;
+  background: hsl(var(--muted) / 0.3);
+  border: 2px dashed hsl(var(--border));
+  border-radius: 0.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -60,7 +99,8 @@
 
 .photoError {
   text-align: center;
-  color: #6c757d;
+  color: hsl(var(--muted-foreground));
+  font-family: Inter, system-ui, sans-serif;
 }
 
 .errorIcon {
@@ -77,39 +117,41 @@
 
 .retryButton {
   padding: 0.5rem 1rem;
-  background: #007bff;
-  color: white;
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
   border: none;
-  border-radius: 4px;
+  border-radius: 0.5rem;
   cursor: pointer;
   font-size: 0.875rem;
-  transition: background-color 0.2s;
+  font-family: Inter, system-ui, sans-serif;
+  font-weight: 500;
+  transition: all 0.2s ease;
 }
 
 .retryButton:hover {
-  background: #0056b3;
+  background: hsl(var(--primary) / 0.9);
+  transform: translateY(-1px);
 }
 
 @media (max-width: 768px) {
   .photoWithFabricContainer {
-    height: 50vh;
-    min-height: 350px;
+    padding: 0.5rem;
   }
 
   .photoWrapper {
-    width: 85%;
-    height: 85%;
+    max-width: 400px;
+    max-height: 500px;
   }
 }
 
 @media (max-width: 480px) {
   .photoWithFabricContainer {
-    height: 45vh;
-    min-height: 300px;
+    padding: 0.25rem;
   }
 
   .photoWrapper {
-    width: 90%;
-    height: 80%;
+    max-width: 350px;
+    max-height: 450px;
+    border-radius: 0.75rem;
   }
 }

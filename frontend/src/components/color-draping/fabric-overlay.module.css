@@ -3,24 +3,34 @@
   bottom: 20%;
   left: 50%;
   transform: translateX(-50%);
-  width: 60%;
-  height: 25%;
+  width: 85%;
+  height: 35%;
   z-index: 10;
+  max-width: 380px;
+  max-height: 220px;
 }
 
 .fabricSwatch {
   position: relative;
   width: 100%;
   height: 100%;
-  border-radius: 8px 8px 0 0;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  border-radius: 50% 50% 20% 20%;
+  box-shadow:
+    0 12px 32px hsla(var(--foreground), 0.3),
+    0 4px 12px hsla(var(--foreground), 0.15),
+    inset 0 2px 0 rgba(255, 255, 255, 0.25);
   transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  transform-style: preserve-3d;
+  clip-path: ellipse(85% 70% at 50% 30%);
 }
 
 .fabricSwatch.transitioning {
-  transform: scale(1.02);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  transform: scale(1.02) rotateX(2deg);
+  box-shadow:
+    0 12px 35px hsla(var(--foreground), 0.5),
+    0 4px 12px hsla(var(--foreground), 0.3);
 }
 
 .fabricTexture {
@@ -48,9 +58,58 @@
   left: 0;
   right: 0;
   height: 30%;
-  background: linear-gradient(180deg, rgba(255,255,255,0.2) 0%, transparent 100%);
-  border-radius: 8px 8px 0 0;
+  background: linear-gradient(180deg, hsla(var(--background), 0.2) 0%, transparent 100%);
+  border-radius: 1rem 1rem 0 0;
   pointer-events: none;
+}
+
+/* Fabric shadow for depth */
+.fabricShadow {
+  position: absolute;
+  bottom: -5px;
+  left: 5px;
+  right: 5px;
+  height: 10px;
+  background: linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.2) 50%, transparent 100%);
+  border-radius: 50%;
+  filter: blur(3px);
+  pointer-events: none;
+}
+
+/* Fabric fold effect for realism */
+.fabricFold {
+  position: absolute;
+  top: 20%;
+  left: 15%;
+  right: 15%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.1) 50%, transparent 100%);
+  border-radius: 1px;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+/* Color name label */
+.colorLabel {
+  position: absolute;
+  bottom: -35px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: hsla(var(--background), 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  box-shadow: 0 2px 8px hsla(var(--foreground), 0.1);
+  z-index: 20;
+}
+
+.colorName {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: hsl(var(--foreground));
+  font-family: Inter, system-ui, sans-serif;
+  white-space: nowrap;
 }
 
 .fabricSilk {
@@ -84,16 +143,20 @@
 
 @media (max-width: 768px) {
   .fabricOverlayContainer {
-    width: 70%;
-    height: 20%;
-    bottom: 15%;
+    width: 75%;
+    height: 25%;
+    bottom: 12%;
+    max-width: 350px;
+    max-height: 180px;
   }
 }
 
 @media (max-width: 480px) {
   .fabricOverlayContainer {
-    width: 80%;
-    height: 18%;
-    bottom: 12%;
+    width: 85%;
+    height: 22%;
+    bottom: 10%;
+    max-width: 300px;
+    max-height: 150px;
   }
 }

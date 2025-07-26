@@ -16,6 +16,7 @@ import {
   Star,
   TrendingUp
 } from 'lucide-react';
+import { generateColorName } from '@/lib/color-name-generator';
 
 interface EnhancedResultsProps {
   results: ComprehensiveAnalysisResult;
@@ -208,7 +209,10 @@ const EnhancedResults: React.FC<EnhancedResultsProps> = ({ results }) => {
                           className="w-full h-12 rounded-lg border mb-1"
                           style={{ backgroundColor: color }}
                         ></div>
-                        <span className="text-xs">{color}</span>
+                        <div className="text-xs space-y-1">
+                          <div className="font-medium">{generateColorName(color)}</div>
+                          <div className="text-gray-500">{color}</div>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -223,7 +227,10 @@ const EnhancedResults: React.FC<EnhancedResultsProps> = ({ results }) => {
                           className="w-full h-12 rounded-lg border mb-1"
                           style={{ backgroundColor: color }}
                         ></div>
-                        <span className="text-xs">{color}</span>
+                        <div className="text-xs space-y-1">
+                          <div className="font-medium">{generateColorName(color)}</div>
+                          <div className="text-gray-500">{color}</div>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -238,7 +245,10 @@ const EnhancedResults: React.FC<EnhancedResultsProps> = ({ results }) => {
                           className="w-full h-12 rounded-lg border mb-1"
                           style={{ backgroundColor: color }}
                         ></div>
-                        <span className="text-xs">{color}</span>
+                        <div className="text-xs space-y-1">
+                          <div className="font-medium">{generateColorName(color)}</div>
+                          <div className="text-gray-500">{color}</div>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -257,7 +267,10 @@ const EnhancedResults: React.FC<EnhancedResultsProps> = ({ results }) => {
                             <div className="w-full h-0.5 bg-red-500 rotate-45"></div>
                           </div>
                         </div>
-                        <span className="text-xs">{color}</span>
+                        <div className="text-xs space-y-1">
+                          <div className="font-medium">{generateColorName(color)}</div>
+                          <div className="text-gray-500">{color}</div>
+                        </div>
                       </div>
                     ))}
                   </div>

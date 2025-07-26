@@ -1,30 +1,56 @@
+/* Personal Draping Studio Layout */
 .walkthroughFlow {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  grid-template-rows: 1fr auto;
+  grid-template-areas:
+    "photo details"
+    "navigation navigation";
+  background: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--muted) / 0.3) 100%);
+  transition: background-color 0.3s ease;
+  gap: 0;
 }
 
+/* Central Canvas - User Photo */
 .photoSection {
-  flex: 1;
+  grid-area: photo;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
-  min-height: 60vh;
+  padding: 3rem 2rem;
+  background: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--muted) / 0.1) 100%);
+  border-right: 1px solid hsl(var(--border) / 0.3);
+  min-height: calc(100vh - 120px);
 }
 
+/* Information Panel - Right Side */
 .detailsSection {
-  flex-shrink: 0;
-  background: white;
-  border-top: 1px solid #e5e7eb;
-  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+  grid-area: details;
+  position: relative;
+  background: hsl(var(--background));
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-left: 1px solid hsl(var(--border) / 0.2);
+  box-shadow: -2px 0 12px hsla(var(--foreground), 0.04);
+  overflow-y: auto;
+  max-height: calc(100vh - 120px);
 }
 
+/* Fixed Footer Navigation */
 .navigationSection {
-  flex-shrink: 0;
-  background: white;
-  border-top: 1px solid #f3f4f6;
+  grid-area: navigation;
+  position: sticky;
+  bottom: 0;
+  z-index: 50;
+  background: hsl(var(--background) / 0.95);
+  border-top: 1px solid hsl(var(--border) / 0.3);
+  padding: 1.5rem 2rem;
+  box-shadow: 0 -4px 16px hsla(var(--foreground), 0.06);
+  backdrop-filter: blur(12px);
 }
 
 .walkthroughError {
@@ -34,39 +60,86 @@
   justify-content: center;
   min-height: 50vh;
   text-align: center;
-  color: #6b7280;
+  color: hsl(var(--muted-foreground));
+  font-family: Inter, system-ui, sans-serif;
 }
 
 .walkthroughError p {
   font-size: 1.125rem;
   margin-bottom: 1rem;
+  color: hsl(var(--foreground));
 }
 
 .walkthroughError button {
   padding: 0.75rem 1.5rem;
-  background: #3b82f6;
-  color: white;
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
   border: none;
-  border-radius: 6px;
+  border-radius: 0.5rem;
   cursor: pointer;
   font-weight: 500;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
+  font-family: Inter, system-ui, sans-serif;
 }
 
 .walkthroughError button:hover {
-  background: #2563eb;
+  background: hsl(var(--primary) / 0.9);
+  transform: translateY(-1px);
+}
+
+/* Mobile Layout - Stack vertically */
+@media (max-width: 1200px) {
+  .walkthroughFlow {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto auto;
+    grid-template-areas:
+      "photo"
+      "details"
+      "navigation";
+  }
+
+  .photoSection {
+    border-right: none;
+    border-bottom: 1px solid hsl(var(--border) / 0.3);
+    min-height: 65vh;
+    padding: 2rem 1rem;
+  }
+
+  .detailsSection {
+    border-left: none;
+    border-top: 1px solid hsl(var(--border) / 0.2);
+    box-shadow: 0 -2px 12px hsla(var(--foreground), 0.04);
+    max-height: none;
+    padding: 2rem 1.5rem;
+  }
 }
 
 @media (max-width: 768px) {
   .photoSection {
-    padding: 1.5rem;
-    min-height: 50vh;
+    padding: 1.5rem 1rem;
+    min-height: 55vh;
+  }
+
+  .detailsSection {
+    padding: 1.25rem;
+  }
+
+  .navigationSection {
+    padding: 1rem 1.5rem;
   }
 }
 
 @media (max-width: 480px) {
   .photoSection {
+    padding: 1rem 0.5rem;
+    min-height: 50vh;
+  }
+
+  .detailsSection {
     padding: 1rem;
-    min-height: 45vh;
+  }
+
+  .navigationSection {
+    padding: 0.75rem 1rem;
   }
 }

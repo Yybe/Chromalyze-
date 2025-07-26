@@ -17,6 +17,7 @@ export default function WalkthroughPage({ params }: WalkthroughPageProps) {
   const [userPhotoUrl, setUserPhotoUrl] = useState<string>('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [originalAnalysisId, setOriginalAnalysisId] = useState<string | null>(null);
 
   useEffect(() => {
     const loadAnalysisData = async () => {
@@ -24,10 +25,10 @@ export default function WalkthroughPage({ params }: WalkthroughPageProps) {
         setLoading(true);
         setError(null);
 
-        // In a real app, you would fetch this data from your API or storage
-        // For now, we'll check if the data exists in sessionStorage or localStorage
+        // Check if the data exists in sessionStorage
         const storedResult = sessionStorage.getItem(`analysis_${params.id}`);
         const storedPhoto = sessionStorage.getItem(`photo_${params.id}`);
+        const storedOriginalId = sessionStorage.getItem(`original_id_${params.id}`);
 
         if (!storedResult || !storedPhoto) {
           throw new Error('Analysis data not found');
@@ -36,6 +37,7 @@ export default function WalkthroughPage({ params }: WalkthroughPageProps) {
         const result: ComprehensiveAnalysisResult = JSON.parse(storedResult);
         setAnalysisResult(result);
         setUserPhotoUrl(storedPhoto);
+        setOriginalAnalysisId(storedOriginalId);
       } catch (err) {
         console.error('Failed to load analysis data:', err);
         setError('Analysis data not found. Please start a new analysis.');
@@ -50,6 +52,7 @@ export default function WalkthroughPage({ params }: WalkthroughPageProps) {
   }, [params.id]);
 
   const handleViewFullAnalysis = () => {
+    // Always redirect to the full analysis results page for this analysis ID
     router.push(`/analyze/${params.id}`);
   };
 

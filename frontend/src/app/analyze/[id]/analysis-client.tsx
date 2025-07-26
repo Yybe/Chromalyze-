@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import ResultsDisplay from './results-display'
 import AnalysisResultsEntry from '@/components/analyze/analysis-results-entry'
+import EnhancedResultsEntry from '@/components/analyze/enhanced-results-entry'
 
 interface ColorObject {
   name: string;
@@ -60,7 +61,7 @@ export default function AnalysisClient({ id }: { id: string }) {
   useEffect(() => {
     // Debug log for ID
     console.log('AnalysisClient mounted with ID:', id);
-    
+
     if (!id) {
       console.error('Missing analysis ID in URL params');
       setError('Missing analysis ID. Please try again with a valid analysis.');
@@ -71,6 +72,70 @@ export default function AnalysisClient({ id }: { id: string }) {
     const storedPhoto = sessionStorage.getItem(`photo_${id}`);
     if (storedPhoto) {
       setUserPhotoUrl(storedPhoto);
+    }
+
+    // Check if this is an enhanced analysis (frontend-only)
+    if (id.startsWith('enhanced_')) {
+      console.log('Enhanced analysis detected, checking sessionStorage');
+      const storedAnalysis = sessionStorage.getItem(`analysis_${id}`);
+
+      if (storedAnalysis) {
+        try {
+          const analysisData = JSON.parse(storedAnalysis);
+          console.log('Found enhanced analysis in sessionStorage:', analysisData);
+
+          // Convert enhanced analysis to the format expected by the results display
+          const colorSeasonName = analysisData.colorSeason?.season || analysisData.colorSeason || 'Unknown';
+          const faceShapeName = analysisData.faceShape?.faceShape || analysisData.faceShape?.shape || 'Unknown';
+
+          // Convert color arrays to proper format with name and hex
+          const convertColorArray = (colors: any[]) => {
+            if (!colors || !Array.isArray(colors)) return [];
+            return colors.map((color, index) => {
+              if (typeof color === 'string') {
+                return { name: `Color ${index + 1}`, hex: color };
+              } else if (color && typeof color === 'object' && color.hex) {
+                return { name: color.name || `Color ${index + 1}`, hex: color.hex };
+              }
+              return { name: `Color ${index + 1}`, hex: '#000000' };
+            });
+          };
+
+          const convertedResults = {
+            face_shape: faceShapeName,
+            color_season: colorSeasonName,
+            faces_detected: 1,
+            palette: {
+              description: `Your ${colorSeasonName} color palette`,
+              recommended: convertColorArray(analysisData.recommendations?.colors?.primary || []),
+              avoid: convertColorArray(analysisData.recommendations?.colors?.avoid || [])
+            },
+            face_shape_recommendations: analysisData.faceShape?.recommendations || {
+              description: 'Face shape analysis completed',
+              strengths: [],
+              hairstyles: { recommended: [], avoid: [] },
+              makeup: { contouring: '', eyebrows: '', eyes: '', lips: '' },
+              accessories: { earrings: '', glasses: '', hats: '' }
+            }
+          };
+
+          // For enhanced analysis, we need to use the original comprehensive format
+          // Store the original enhanced analysis data for the enhanced results component
+          sessionStorage.setItem(`enhanced_analysis_${id}`, storedAnalysis);
+
+          setResults(convertedResults);
+          setStatus('completed');
+          setProgress(100);
+          setIsLocalAnalysis(false); // Don't show "Local Analysis Mode" message
+          return; // Don't proceed with API polling
+        } catch (error) {
+          console.error('Failed to parse enhanced analysis data:', error);
+        }
+      }
+
+      // If no sessionStorage data found for enhanced analysis, show error
+      setError('Enhanced analysis data not found. Please try analyzing your image again.');
+      return;
     }
     
     // Define the fetch function inside the useEffect to properly capture the id
@@ -101,8 +166,10 @@ export default function AnalysisClient({ id }: { id: string }) {
           console.log('Using local analysis results:', data.detail);
         }
         
-        if (data.status === 'completed' && data.results) {
-          setResults(data.results);
+        if (data.status === 'completed' && (data.results || data.result)) {
+          // Handle both backend format (data.result) and enhanced format (data.results)
+          const resultData = data.results || data.result;
+          setResults(resultData);
           setProgress(100);
         } else if (data.status === 'error') {
           setError(data.error_detail || 'Analysis failed');
@@ -112,7 +179,7 @@ export default function AnalysisClient({ id }: { id: string }) {
           if (data.status === 'pending') {
             setProgress(Math.min(40, 10 + (pollCount * 2)));
           } else if (data.status === 'processing') {
-            setProgress(Math.min(90, 40 + (pollCount * 5)));
+            setProgress(Math.min(95, 40 + (pollCount * 5)));
           }
         }
         
@@ -173,10 +240,28 @@ export default function AnalysisClient({ id }: { id: string }) {
   }
 
   if (status === "completed" && results) {
+    // Check if this is an enhanced analysis
+    const enhancedAnalysisData = sessionStorage.getItem(`enhanced_analysis_${id}`);
+
+    if (enhancedAnalysisData && id.startsWith('enhanced_')) {
+      try {
+        const enhancedResults = JSON.parse(enhancedAnalysisData);
+        return (
+          <EnhancedResultsEntry
+            results={enhancedResults}
+            userPhotoUrl={userPhotoUrl || undefined}
+          />
+        );
+      } catch (error) {
+        console.error('Failed to parse enhanced analysis data for display:', error);
+      }
+    }
+
+    // Use basic results entry for backend/legacy analysis
     return (
       <>
-        <AnalysisResultsEntry 
-          results={results} 
+        <AnalysisResultsEntry
+          results={results}
           analysisId={id}
           userPhotoUrl={userPhotoUrl || undefined}
         />

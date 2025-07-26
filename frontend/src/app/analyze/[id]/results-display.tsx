@@ -46,17 +46,17 @@ export default function ResultsDisplay({ results }: { results: AnalysisResult })
   const router = useRouter()
 
   return (
-    <div className="container flex-1 py-6 md:py-12">
+    <div className="container flex-1 py-6 md:py-12 bg-background">
       <div className="mx-auto flex max-w-[800px] flex-col items-center space-y-8">
-        <h1 className="text-3xl font-bold tracking-tight">Analysis Complete</h1>
-        
+        <h1 className="text-3xl font-bold tracking-tight text-foreground font-[Inter]">Analysis Complete</h1>
+
         {results.faces_detected !== undefined && (
           <div className="w-full text-center">
-            <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">
-              {results.faces_detected === 0 
-                ? "No face detected, providing general analysis" 
-                : results.faces_detected === 1 
-                  ? "1 face detected" 
+            <span className="inline-flex items-center rounded-md bg-primary/10 px-2 py-1 text-xs font-medium text-primary ring-1 ring-inset ring-primary/20">
+              {results.faces_detected === 0
+                ? "No face detected, providing general analysis"
+                : results.faces_detected === 1
+                  ? "1 face detected"
                   : `${results.faces_detected} faces detected (analyzed primary face)`}
             </span>
           </div>
@@ -64,21 +64,21 @@ export default function ResultsDisplay({ results }: { results: AnalysisResult })
         
         <div className="w-full space-y-8">
           {/* Face Shape Section */}
-          <div className="rounded-lg border p-6">
-            <h2 className="text-2xl font-semibold mb-4">Face Shape: {results.face_shape}</h2>
+          <div className="rounded-lg border border-border bg-card p-6">
+            <h2 className="text-2xl font-semibold mb-4 text-foreground font-[Inter]">Face Shape: {results.face_shape}</h2>
 
             {results.face_shape_recommendations ? (
               <div className="space-y-6">
-                <p className="text-muted-foreground">
+                <p className="text-muted-foreground font-[Inter]">
                   {results.face_shape_recommendations.description}
                 </p>
 
                 {/* Strengths */}
                 <div className="space-y-2">
-                  <h3 className="font-medium text-green-700">Your Natural Strengths:</h3>
+                  <h3 className="font-medium text-green-600 font-[Inter]">Your Natural Strengths:</h3>
                   <ul className="list-disc pl-5 space-y-1">
                     {results.face_shape_recommendations.strengths.map((strength, i) => (
-                      <li key={i} className="text-sm text-green-600">{strength}</li>
+                      <li key={i} className="text-sm text-green-600 font-[Inter]">{strength}</li>
                     ))}
                   </ul>
                 </div>
@@ -168,23 +168,23 @@ export default function ResultsDisplay({ results }: { results: AnalysisResult })
             {/* Color Palette */}
             {results.palette && (
               <div className="space-y-4">
-                <p className="text-sm">{results.palette.description}</p>
-                
+                <p className="text-sm text-muted-foreground font-[Inter]">{results.palette.description}</p>
+
                 <div className="space-y-2">
-                  <h3 className="font-medium">Recommended Colors:</h3>
+                  <h3 className="font-medium text-foreground font-[Inter]">Recommended Colors:</h3>
                   <div className="flex flex-wrap gap-2">
                     {results.palette.recommended.map((color, i) => (
-                      <div 
-                        key={i} 
-                        className="text-sm py-1 px-3 rounded-full flex items-center gap-1"
-                        style={{ 
-                          backgroundColor: `${color.hex}20`, 
+                      <div
+                        key={i}
+                        className="text-sm py-1 px-3 rounded-full flex items-center gap-1 font-[Inter]"
+                        style={{
+                          backgroundColor: `${color.hex}20`,
                           color: color.hex,
                           border: `1px solid ${color.hex}40`
                         }}
                       >
-                        <span 
-                          className="inline-block w-3 h-3 rounded-full" 
+                        <span
+                          className="inline-block w-3 h-3 rounded-full border border-border"
                           style={{ backgroundColor: color.hex }}
                         ></span>
                         {color.name}
@@ -192,21 +192,21 @@ export default function ResultsDisplay({ results }: { results: AnalysisResult })
                     ))}
                   </div>
                 </div>
-                
+
                 <div className="space-y-2">
-                  <h3 className="font-medium">Colors to Avoid:</h3>
+                  <h3 className="font-medium text-foreground font-[Inter]">Colors to Avoid:</h3>
                   <div className="flex flex-wrap gap-2">
                     {results.palette.avoid.map((color, i) => (
-                      <div 
-                        key={i} 
-                        className="text-sm py-1 px-3 rounded-full flex items-center gap-1 text-destructive" 
-                        style={{ 
+                      <div
+                        key={i}
+                        className="text-sm py-1 px-3 rounded-full flex items-center gap-1 text-destructive font-[Inter]"
+                        style={{
                           backgroundColor: `${color.hex}10`,
                           border: `1px solid ${color.hex}40`
                         }}
                       >
-                        <span 
-                          className="inline-block w-3 h-3 rounded-full" 
+                        <span
+                          className="inline-block w-3 h-3 rounded-full border border-border"
                           style={{ backgroundColor: color.hex }}
                         ></span>
                         {color.name}
@@ -220,10 +220,17 @@ export default function ResultsDisplay({ results }: { results: AnalysisResult })
         </div>
         
         <div className="flex justify-center space-x-4">
-          <Button onClick={() => router.push('/analyze')}>
+          <Button
+            onClick={() => router.push('/analyze')}
+            className="bg-primary hover:bg-primary/90 text-primary-foreground font-[Inter]"
+          >
             New Analysis
           </Button>
-          <Button variant="outline" onClick={() => window.print()}>
+          <Button
+            variant="outline"
+            onClick={() => window.print()}
+            className="border-2 hover:bg-secondary/50 font-[Inter]"
+          >
             Print Results
           </Button>
         </div>

@@ -28,6 +28,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 import uvicorn
 
+from color_palettes import COLOR_PALETTES, get_palette
+
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -340,14 +342,29 @@ async def get_results(analysis_id: str) -> JSONResponse:
             )
             
         status_value, face_shape, color_season, error_detail = result
-        
+
+        # Get detailed palette data if analysis is completed
+        palette_data = None
+        if status_value == "completed" and color_season and color_season != "Unknown":
+            try:
+                normalized_season = color_season.replace('_', ' ').title()
+                palette_data = get_palette(normalized_season)
+            except Exception as e:
+                logger.warning(f"Could not get palette for {color_season}: {e}")
+
+        result_data = {
+            "face_shape": face_shape,
+            "color_season": color_season,
+            "error_detail": error_detail
+        }
+
+        # Add palette data if available
+        if palette_data:
+            result_data["palette"] = palette_data
+
         return JSONResponse(content={
             "status": status_value,
-            "result": {
-                "face_shape": face_shape,
-                "color_season": color_season,
-                "error_detail": error_detail
-            }
+            "result": result_data
         })
         
     except HTTPException:
@@ -363,6 +380,36 @@ async def get_results(analysis_id: str) -> JSONResponse:
 async def health_check() -> JSONResponse:
     """Health check endpoint."""
     return JSONResponse(content={"status": "healthy"})
+
+@app.get("/api/palette/{color_season}")
+async def get_color_palette(color_season: str) -> JSONResponse:
+    """Get detailed color palette for a specific color season."""
+    try:
+        # Normalize the color season name
+        normalized_season = color_season.replace('_', ' ').title()
+
+        # Get palette from color_palettes.py
+        palette = get_palette(normalized_season)
+
+        if not palette:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Color season '{normalized_season}' not found"
+            )
+
+        return JSONResponse(content={
+            "season": normalized_season,
+            "palette": palette
+        })
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error getting color palette: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e)
+        )
 
 async def save_analysis_status(analysis_id: str, status: dict):
     """Save analysis status to disk"""

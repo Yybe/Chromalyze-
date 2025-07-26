@@ -82,6 +82,7 @@ export const WalkthroughFlow: React.FC<WalkthroughFlowProps> = ({
           userPhoto={drapingData.userPhoto}
           currentColor={currentColor}
           isTransitioning={isTransitioning}
+          showSkinEffect={true}
         />
       </div>
 

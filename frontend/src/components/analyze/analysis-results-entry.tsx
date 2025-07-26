@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ComprehensiveAnalysisResult } from '@/lib/analysis-service';
-import { transformToColorDrapingData } from '@/lib/color-draping-utils';
+import { transformToColorDrapingData, transformBasicAnalysisToColorDrapingData } from '@/lib/color-draping-utils';
 import EntryScreen from '@/components/color-draping/entry-screen';
 import ResultsDisplay from '@/app/analyze/[id]/results-display';
 
@@ -56,7 +56,14 @@ export const AnalysisResultsEntry: React.FC<AnalysisResultsEntryProps> = ({
   const handleStartWalkthrough = () => {
     // Store the analysis data for the walkthrough page
     if (userPhotoUrl) {
-      // Convert the basic results to ComprehensiveAnalysisResult format
+      // Use the basic analysis transformation to get accurate color data
+      const drapingData = transformBasicAnalysisToColorDrapingData(
+        results,
+        userPhotoUrl,
+        analysisId
+      );
+
+      // Convert to ComprehensiveAnalysisResult format for compatibility
       const comprehensiveResult: ComprehensiveAnalysisResult = {
         faceShape: {
           faceShape: results.face_shape as any,
@@ -117,9 +124,12 @@ export const AnalysisResultsEntry: React.FC<AnalysisResultsEntryProps> = ({
         processingTime: 1000
       };
 
-      // Store data for walkthrough page
+      // Store both the comprehensive result and the draping data
       sessionStorage.setItem(`analysis_${analysisId}`, JSON.stringify(comprehensiveResult));
+      sessionStorage.setItem(`draping_${analysisId}`, JSON.stringify(drapingData));
       sessionStorage.setItem(`photo_${analysisId}`, userPhotoUrl);
+      // Store the original analysis ID for navigation back to full analysis
+      sessionStorage.setItem(`original_id_${analysisId}`, analysisId);
     }
 
     router.push(`/analyze/${analysisId}/walkthrough`);
