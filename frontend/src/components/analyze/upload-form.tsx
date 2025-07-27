@@ -93,8 +93,8 @@ export function UploadForm() {
 
       setIsUploading(false)
 
-      // Redirect to the analysis entry page to choose between full analysis or walkthrough
-      router.push(`/analyze/${analysisId}/entry`)
+      // Redirect to the main analysis page which handles the entry screen
+      router.push(`/analyze/${analysisId}`)
 
     } catch (error) {
       console.error('Enhanced analysis failed:', error)
@@ -129,7 +129,7 @@ export function UploadForm() {
       }
 
       setIsUploading(false)
-      router.push(`/analyze/${analysisId}/entry`)
+      router.push(`/analyze/${analysisId}`)
     } else {
       throw new Error(data.error_detail || 'Analysis failed')
     }

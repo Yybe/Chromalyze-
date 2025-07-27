@@ -136,7 +136,7 @@ export const AnalysisResultsEntry: React.FC<AnalysisResultsEntryProps> = ({
   };
 
   if (!showChoice || !hasWalkthroughData) {
-    return <ResultsDisplay results={results} />;
+    return <ResultsDisplay results={results} userPhotoUrl={userPhotoUrl} />;
   }
 
   return (

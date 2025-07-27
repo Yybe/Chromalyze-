@@ -52,6 +52,8 @@ export default function WalkthroughPage({ params }: WalkthroughPageProps) {
   }, [params.id]);
 
   const handleViewFullAnalysis = () => {
+    // Set flag to skip entry screen and go directly to full analysis
+    sessionStorage.setItem('fromWalkthrough', 'true');
     // Always redirect to the full analysis results page for this analysis ID
     router.push(`/analyze/${params.id}`);
   };

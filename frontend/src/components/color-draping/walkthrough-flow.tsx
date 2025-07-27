@@ -65,11 +65,35 @@ export const WalkthroughFlow: React.FC<WalkthroughFlowProps> = ({
   const canGoPrevious = currentIndex > 0;
   const canGoNext = true; // Always can go next (either to next color or summary)
 
-  if (!currentColor) {
+  // Check if we have valid color data
+  if (!drapingData.colors || drapingData.colors.length === 0 || !currentColor) {
     return (
-      <div className={styles.walkthroughError}>
-        <p>No color data available</p>
-        <button onClick={onBack}>Go Back</button>
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <div className="max-w-md w-full text-center space-y-6">
+          <div className="w-16 h-16 mx-auto bg-destructive/10 rounded-full flex items-center justify-center">
+            <span className="text-2xl">🎨</span>
+          </div>
+          <div className="space-y-2">
+            <h2 className="text-2xl font-bold text-foreground font-[Inter]">No Color Data Available</h2>
+            <p className="text-muted-foreground font-[Inter]">
+              We couldn't find any color recommendations for your walkthrough. This might be due to an issue with your analysis data.
+            </p>
+          </div>
+          <div className="flex flex-col gap-3">
+            <button
+              onClick={onBack}
+              className="px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground rounded-md font-medium transition-colors"
+            >
+              Go Back
+            </button>
+            <button
+              onClick={() => window.location.href = '/analyze'}
+              className="px-6 py-3 border border-border hover:bg-secondary/50 text-foreground rounded-md font-medium transition-colors"
+            >
+              Start New Analysis
+            </button>
+          </div>
+        </div>
       </div>
     );
   }

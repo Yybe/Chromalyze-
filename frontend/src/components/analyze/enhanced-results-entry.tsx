@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ComprehensiveAnalysisResult } from '@/lib/analysis-service';
 import EntryScreen from '@/components/color-draping/entry-screen';
@@ -17,6 +17,19 @@ export const EnhancedResultsEntry: React.FC<EnhancedResultsEntryProps> = ({
 }) => {
   const router = useRouter();
   const [showChoice, setShowChoice] = useState(true);
+
+  // Check if we should skip the entry screen (e.g., coming from walkthrough)
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const skipEntry = urlParams.get('skipEntry') === 'true';
+    const fromWalkthrough = sessionStorage.getItem('fromWalkthrough') === 'true';
+
+    if (skipEntry || fromWalkthrough) {
+      setShowChoice(false);
+      // Clear the flag
+      sessionStorage.removeItem('fromWalkthrough');
+    }
+  }, []);
 
   const handleViewFullAnalysis = () => {
     setShowChoice(false);

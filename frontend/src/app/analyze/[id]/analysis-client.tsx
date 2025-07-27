@@ -84,58 +84,19 @@ export default function AnalysisClient({ id }: { id: string }) {
           const analysisData = JSON.parse(storedAnalysis);
           console.log('Found enhanced analysis in sessionStorage:', analysisData);
 
-          // Convert enhanced analysis to the format expected by the results display
-          const colorSeasonName = analysisData.colorSeason?.season || analysisData.colorSeason || 'Unknown';
-          const faceShapeName = analysisData.faceShape?.faceShape || analysisData.faceShape?.shape || 'Unknown';
-
-          // Convert color arrays to proper format with name and hex
-          const convertColorArray = (colors: any[]) => {
-            if (!colors || !Array.isArray(colors)) return [];
-            return colors.map((color, index) => {
-              if (typeof color === 'string') {
-                return { name: `Color ${index + 1}`, hex: color };
-              } else if (color && typeof color === 'object' && color.hex) {
-                return { name: color.name || `Color ${index + 1}`, hex: color.hex };
-              }
-              return { name: `Color ${index + 1}`, hex: '#000000' };
-            });
-          };
-
-          const convertedResults = {
-            face_shape: faceShapeName,
-            color_season: colorSeasonName,
-            faces_detected: 1,
-            palette: {
-              description: `Your ${colorSeasonName} color palette`,
-              recommended: convertColorArray(analysisData.recommendations?.colors?.primary || []),
-              avoid: convertColorArray(analysisData.recommendations?.colors?.avoid || [])
-            },
-            face_shape_recommendations: analysisData.faceShape?.recommendations || {
-              description: 'Face shape analysis completed',
-              strengths: [],
-              hairstyles: { recommended: [], avoid: [] },
-              makeup: { contouring: '', eyebrows: '', eyes: '', lips: '' },
-              accessories: { earrings: '', glasses: '', hats: '' }
-            }
-          };
-
-          // For enhanced analysis, we need to use the original comprehensive format
-          // Store the original enhanced analysis data for the enhanced results component
-          sessionStorage.setItem(`enhanced_analysis_${id}`, storedAnalysis);
-
-          setResults(convertedResults);
+          // Set status to completed immediately for enhanced analysis
           setStatus('completed');
-          setProgress(100);
-          setIsLocalAnalysis(false); // Don't show "Local Analysis Mode" message
-          return; // Don't proceed with API polling
+          setResults({} as any); // Dummy results, actual data will be handled by EnhancedResultsEntry
+          return; // Skip polling for enhanced analysis
         } catch (error) {
           console.error('Failed to parse enhanced analysis data:', error);
+          setError('Failed to load enhanced analysis data');
+          return;
         }
+      } else {
+        setError('Enhanced analysis data not found');
+        return;
       }
-
-      // If no sessionStorage data found for enhanced analysis, show error
-      setError('Enhanced analysis data not found. Please try analyzing your image again.');
-      return;
     }
     
     // Define the fetch function inside the useEffect to properly capture the id
@@ -241,7 +202,7 @@ export default function AnalysisClient({ id }: { id: string }) {
 
   if (status === "completed" && results) {
     // Check if this is an enhanced analysis
-    const enhancedAnalysisData = sessionStorage.getItem(`enhanced_analysis_${id}`);
+    const enhancedAnalysisData = sessionStorage.getItem(`analysis_${id}`);
 
     if (enhancedAnalysisData && id.startsWith('enhanced_')) {
       try {

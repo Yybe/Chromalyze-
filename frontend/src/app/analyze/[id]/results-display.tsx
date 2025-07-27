@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 
 interface ColorObject {
   name: string;
@@ -42,12 +43,17 @@ interface AnalysisResult {
   face_shape_recommendations?: FaceShapeRecommendations
 }
 
-export default function ResultsDisplay({ results }: { results: AnalysisResult }) {
+interface ResultsDisplayProps {
+  results: AnalysisResult;
+  userPhotoUrl?: string;
+}
+
+export default function ResultsDisplay({ results, userPhotoUrl }: ResultsDisplayProps) {
   const router = useRouter()
 
   return (
     <div className="container flex-1 py-6 md:py-12 bg-background">
-      <div className="mx-auto flex max-w-[800px] flex-col items-center space-y-8">
+      <div className="mx-auto flex max-w-[1200px] flex-col items-center space-y-8">
         <h1 className="text-3xl font-bold tracking-tight text-foreground font-[Inter]">Analysis Complete</h1>
 
         {results.faces_detected !== undefined && (
@@ -61,7 +67,25 @@ export default function ResultsDisplay({ results }: { results: AnalysisResult })
             </span>
           </div>
         )}
-        
+
+        {/* User Photo Section - if available */}
+        {userPhotoUrl && (
+          <div className="w-full max-w-sm mx-auto mb-8">
+            <div className="rounded-lg border border-border bg-card p-4">
+              <h2 className="text-xl font-semibold mb-4 text-foreground font-[Inter] text-center">Your Photo</h2>
+              <div className="relative aspect-[3/4] w-full">
+                <Image
+                  src={userPhotoUrl}
+                  alt="Your uploaded photo"
+                  fill
+                  className="rounded-lg object-cover"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="w-full space-y-8">
           {/* Face Shape Section */}
           <div className="rounded-lg border border-border bg-card p-6">
@@ -157,14 +181,14 @@ export default function ResultsDisplay({ results }: { results: AnalysisResult })
               </div>
             )}
           </div>
-          
+
           {/* Color Season Section */}
           <div className="rounded-lg border p-6">
             <h2 className="text-2xl font-semibold mb-4">Color Season: {results.color_season}</h2>
             <p className="text-muted-foreground mb-4">
               Your color analysis indicates you're a {results.color_season} type.
             </p>
-            
+
             {/* Color Palette */}
             {results.palette && (
               <div className="space-y-4">
@@ -218,8 +242,9 @@ export default function ResultsDisplay({ results }: { results: AnalysisResult })
             )}
           </div>
         </div>
-        
-        <div className="flex justify-center space-x-4">
+
+        {/* Action Buttons */}
+        <div className="flex justify-center space-x-4 mt-8">
           <Button
             onClick={() => router.push('/analyze')}
             className="bg-primary hover:bg-primary/90 text-primary-foreground font-[Inter]"
